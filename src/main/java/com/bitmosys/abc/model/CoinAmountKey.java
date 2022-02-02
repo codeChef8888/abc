@@ -15,6 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CoinAmountKey implements Serializable {
 	
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "coin_id")
 	Long coinId;
 	

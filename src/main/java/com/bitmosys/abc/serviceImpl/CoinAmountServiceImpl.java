@@ -18,33 +18,33 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 
 	@Override
 	public Object getAllUserCoins(Long userId) {
-
+		
 		return coinAmountRepository.getById(userId);
 	}
 
+//	@Override
+//	public Response exchangeCoins(Long userId, Long fromCoin, Long toCoin, BigDecimal coinAmount) {
+//		BigDecimal bint = coinAmountRepository.getAmount(fromCoin);
+//		System.out.println("Check this amount" + bint);
+//		Response response = new Response();
+//
+//		if (coinAmount.compareTo(bint) == 1) {
+//			response.setStatus("failure");
+//			response.setMessage("the exchange amount exceeded the available coin amount!!!");
+//			System.out.println("cannot exchange");
+//		} else {
+//			response.setStatus("success");
+//			response.setMessage("exchange successfull!!!");
+//			coinAmountRepository.deductAmount(userId,coinAmount, fromCoin);
+//			coinAmountRepository.addAmount(userId,coinAmount, toCoin);
+//
+//		}
+//		return response;
+//
+//	}
+
 	@Override
-	public Response exchangeCoins(Long userId, Long fromCoin, Long toCoin, BigDecimal coinAmount) {
-		BigDecimal bint = coinAmountRepository.getAmount(fromCoin);
-		System.out.println("Check this amount" + bint);
-		Response response = new Response();
-
-		if (coinAmount.compareTo(bint) == 1) {
-			response.setStatus("failure");
-			response.setMessage("the exchange amount exceeded the available coin amount!!!");
-			System.out.println("cannot exchange");
-		} else {
-			response.setStatus("success");
-			response.setMessage("exchange successfull!!!");
-			coinAmountRepository.deductAmount(coinAmount, fromCoin);
-			coinAmountRepository.addAmount(coinAmount, toCoin);
-
-		}
-		return response;
-
-	}
-
-	@Override
-	public Response exchangeCoin(ExchangeFormDTO exchangeFormDTO) {
+	public Response exchangeCoin(Long userId, ExchangeFormDTO exchangeFormDTO) {
 		Long fromCoin = exchangeFormDTO.getFromCoin();
 		Long toCoin = exchangeFormDTO.getToCoin();
 		BigDecimal coinAmount = exchangeFormDTO.getCoinAmount();
@@ -55,16 +55,18 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 
 		if (fromCoin != toCoin) {
 			if (coinAmount.compareTo(bint) == 1) {
+
 				response.setStatus("failure");
 				response.setMessage("the exchange amount exceeded the available coin amount!!!");
 				response.setExchangeFormDto(exchangeFormDTO);
-				System.out.println("cannot exchange");
+
 			} else {
+
 				response.setStatus("success");
 				response.setMessage("exchange successfull!!!");
 				response.setExchangeFormDto(exchangeFormDTO);
-				coinAmountRepository.deductAmount(coinAmount, fromCoin);
-				coinAmountRepository.addAmount(coinAmount, toCoin);
+				coinAmountRepository.deductAmount(userId, coinAmount, fromCoin);
+				coinAmountRepository.addAmount(userId, coinAmount, toCoin);
 
 			}
 		} else {
@@ -78,8 +80,8 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 	}
 
 	@Override
-	public int getTotalCoinTypes() {
-		return coinAmountRepository.getTotalCoinTypes();
+	public int getTotalCoinTypes(Long userId) {
+		return coinAmountRepository.getTotalCoinTypes(userId);
 	}
 
 }
