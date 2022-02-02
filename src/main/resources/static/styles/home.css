@@ -1,0 +1,56 @@
+*{box-sizing: border-box;}
+
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+  text-decoration: none;
+}
+
+img {
+	 width: 40;
+	  height: 50;
+}
+
+/*table css*/
+
+.table{ 
+	    width: 80%;
+	  margin-left:auto; 
+    margin-right:auto;
+}
+/*Header of user's coin table */
+.table thead tr#theadCoinTable th {
+ 
+    display: none;
+}
+/*top nav*/
+h1.heading{
+	margin-left: 7rem;
+}
+ul.topNavigationBar{
+	margin-left: 111px;
+	width: 80%;
+}
