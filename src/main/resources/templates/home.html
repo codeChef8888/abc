@@ -26,8 +26,8 @@
 	<div id="postResultDiv" align="center"></div>
 	<div class="container my-2">
 		<ul class="topNavigationBar">
-			<li><a th:href="@{/usercoins/1}">ABC</a></li>
-			<li><a th:href="@{/usercoins/1}">Home</a></li>
+			<li><a th:href="@{'/usercoins/' + ${currentUserId}}">ABC</a></li>
+			<li><a th:href="@{'/usercoins/' + ${currentUserId}}">Home</a></li>
 			<li><a href="@{/usercoins/1/Coins}">Cryptos</a></li>
 		</ul>
 	</div>

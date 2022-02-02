@@ -21,9 +21,10 @@ public class CoinAmountController {
 	CoinAmountServiceImpl coinAmountServiceImpl;
 	
 	@GetMapping("/usercoins/{userId}")
-	public String getAll(@PathVariable(value = "userId") Long userId,Model model) {
-		model.addAttribute("totalCoins", coinAmountServiceImpl.getTotalCoinTypes(userId));
-		model.addAttribute("listUserCoins",coinAmountServiceImpl.getAllUserCoins(userId));
+	public String getAll(@PathVariable(value = "userId") Long currentUserId,Model model) {
+		model.addAttribute("currentUserId", currentUserId);
+		model.addAttribute("totalCoins", coinAmountServiceImpl.getTotalCoinTypes(currentUserId));
+		model.addAttribute("listUserCoins",coinAmountServiceImpl.getAllUserCoins(currentUserId));
 		return "home";
 	}
 	
