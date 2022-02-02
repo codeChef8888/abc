@@ -115,8 +115,8 @@
 
 							<label for="tCoin">Available Coins:</label>
 							<select id="tCoin" name="toCoin">
-								<option th:each="datas : ${listUserCoins}" th:text="${datas.coin.name}"
-									th:value="${datas.coin.id}"></option>
+								<option th:each="datas : ${coinsList}" th:text="${datas.name}"
+									th:value="${datas.id}"></option>
 							</select>
 
 							<label for="coinAmt">Amount of <strong class="fromCoinName"></strong> :
