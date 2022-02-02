@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ExchangeFormDTO {
 	
+
 	private Long fromCoin;
 	private Long toCoin;
+	private BigDecimal availableCoins;
 	private BigDecimal coinAmount;
 
 }

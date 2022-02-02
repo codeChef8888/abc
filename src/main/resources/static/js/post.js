@@ -1,8 +1,13 @@
 $(document).on("click", ".btn-exchange", function() {
+	
 	var fCoinName = $(this).data('id');
+	
 	var userId = $(this).data('user-id');
+	
 	console.log("this is the user ID: " + userId);
+	
 	$("#current-user-Id").val(userId);
+	
 	console.log(fCoinName);
 	$(".fromCoinName").html(fCoinName);
 
@@ -13,10 +18,13 @@ $(document).on("click", ".btn-exchange", function() {
 	// $('#addBookDialog').modal('show');
 });
 
+
+
 function exchanger(from, to) {
 
 	$("#fCoin").val(from);
 	$("#aCoins").val(to);
+	
 
 
 }
@@ -28,6 +36,7 @@ $("#save-exchange").click(function() {
 	var formData = {
 		fromCoin: $("#fCoin").val(),
 		toCoin: $("#tCoin").val(),
+		availableCoins:$("#aCoins").val(),
 		coinAmount: $("#coinAmt").val()
 
 	}
@@ -44,8 +53,8 @@ $("#save-exchange").click(function() {
 				$("#result-msg").html("<h6>" + result.message + "</h6>");
 
 				setTimeout(function() {
-					window.location = "/usercoins/1";
-				}, 1000);
+					window.location = "/usercoins/" + userId;
+				}, 250);
 
 			} else {
 				$("#result-msg").html("<h6>" + result.message + "</h6>");

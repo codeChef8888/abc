@@ -18,7 +18,7 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 
 	@Override
 	public Object getAllUserCoins(Long userId) {
-		
+
 		return coinAmountRepository.getById(userId);
 	}
 
@@ -45,33 +45,44 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 
 	@Override
 	public Response exchangeCoin(Long userId, ExchangeFormDTO exchangeFormDTO) {
+
 		Long fromCoin = exchangeFormDTO.getFromCoin();
 		Long toCoin = exchangeFormDTO.getToCoin();
-		BigDecimal coinAmount = exchangeFormDTO.getCoinAmount();
+		BigDecimal availableCoinAmount = exchangeFormDTO.getAvailableCoins();
+		BigDecimal exchangeCoinAmount = exchangeFormDTO.getCoinAmount();
 
-		BigDecimal bint = coinAmountRepository.getAmount(fromCoin);
-		System.out.println("Check this amount" + bint);
+//		BigDecimal bint = coinAmountRepository.getAmount(fromCoin);
+//		System.out.println("Check this amount" + bint);
+
 		Response response = new Response();
 
-		if (fromCoin != toCoin) {
-			if (coinAmount.compareTo(bint) == 1) {
+		if (availableCoinAmount.compareTo(BigDecimal.valueOf(0)) != 0) {
 
-				response.setStatus("failure");
-				response.setMessage("the exchange amount exceeded the available coin amount!!!");
-				response.setExchangeFormDto(exchangeFormDTO);
+			if (fromCoin != toCoin) {
+				if (exchangeCoinAmount.compareTo(availableCoinAmount) == 1) {
 
+					response.setStatus("failure");
+					response.setMessage("Transaction Failed. Coin Amount for Exchange must be less or equal to : [ " + availableCoinAmount + " ]" );
+					response.setExchangeFormDto(exchangeFormDTO);
+
+				} else {
+
+					response.setStatus("success");
+					response.setMessage("Coins Exchanged successfully!!!");
+					response.setExchangeFormDto(exchangeFormDTO);
+					coinAmountRepository.deductAmount(userId, exchangeCoinAmount, fromCoin);
+					coinAmountRepository.addAmount(userId, exchangeCoinAmount, toCoin);
+
+				}
 			} else {
-
-				response.setStatus("success");
-				response.setMessage("exchange successfull!!!");
+				response.setStatus("failure");
+				response.setMessage("You are exchanging the same coin types!!! Please Check!!!");
 				response.setExchangeFormDto(exchangeFormDTO);
-				coinAmountRepository.deductAmount(userId, coinAmount, fromCoin);
-				coinAmountRepository.addAmount(userId, coinAmount, toCoin);
-
 			}
+
 		} else {
 			response.setStatus("failure");
-			response.setMessage("You are exchanging the same coin types!!! Please Check!!!");
+			response.setMessage("You don't have any coins for exchanging");
 			response.setExchangeFormDto(exchangeFormDTO);
 		}
 
