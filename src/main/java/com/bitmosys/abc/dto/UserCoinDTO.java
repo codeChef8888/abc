@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserCoinDTO {
 
-	private Long userId;
-	private String firstName;
-	private String lastName;
-	private Long coinId;
-	private BigDecimal amount;
+	private Long fromCoin;
+	private BigDecimal coinAmount;
 }

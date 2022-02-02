@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bitmosys.abc.dto.ExchangeFormDTO;
+import com.bitmosys.abc.dto.UserCoinDTO;
+import com.bitmosys.abc.model.BuyResponse;
 import com.bitmosys.abc.model.Response;
 import com.bitmosys.abc.repository.CoinAmountRepository;
 import com.bitmosys.abc.service.CoinAmountService;
@@ -93,6 +95,14 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 	@Override
 	public int getTotalCoinTypes(Long userId) {
 		return coinAmountRepository.getTotalCoinTypes(userId);
+	}
+
+	@Override
+	public BuyResponse buyCoin(Long userId, UserCoinDTO coinDTO) {
+		Long fromCoin= coinDTO.getFromCoin();
+		BigDecimal amount = coinDTO.getCoinAmount();
+		coinAmountRepository.addAmount(userId, amount, fromCoin);
+		return new BuyResponse("success", "Coin is bought", coinDTO);
 	}
 
 }
