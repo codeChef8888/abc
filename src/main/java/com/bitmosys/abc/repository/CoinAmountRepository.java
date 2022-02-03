@@ -30,10 +30,12 @@ public interface CoinAmountRepository extends JpaRepository<CoinAmount, CoinAmou
 	
 	@Modifying
 	@Query(value = "update coin_amount c set c.amount = c.amount - (:amt)  where c.user_id = :userId and c.coin_id = :coinId ", nativeQuery = true)
+	@Transactional
 	public void deductAmount(@Param("userId") Long userId, @Param("amt") BigDecimal amount, @Param("coinId") Long coinId);
 	
 	@Modifying
 	@Query(value = "update coin_amount c set c.amount = c.amount + (:amt)  where c.user_id = :userId and c.coin_id = :coinId ", nativeQuery = true)
+	@Transactional
 	public void addAmount(@Param("userId") Long userId, @Param("amt") BigDecimal amount, @Param("coinId") Long coinId);
 	
 	@Query(value =" select count(*) from coin_amount c where c.user_id = :userId ", nativeQuery = true)

@@ -1,13 +1,19 @@
 package com.bitmosys.abc.serviceImpl;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bitmosys.abc.dto.ExchangeFormDTO;
 import com.bitmosys.abc.dto.UserCoinDTO;
+import com.bitmosys.abc.dto.UsersCoinListDTO;
 import com.bitmosys.abc.model.BuyResponse;
 import com.bitmosys.abc.model.CoinAmount;
 import com.bitmosys.abc.model.Response;
@@ -20,10 +26,14 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 	@Autowired
 	CoinAmountRepository coinAmountRepository;
 
-	@Override
-	public Object getAllUserCoins(Long userId) {
+	@Autowired
+	ModelMapper modelMapper;
 
-		return coinAmountRepository.getById(userId);
+	@Override
+	public List<UsersCoinListDTO> getAllUserCoins(Long userId) {
+
+		return coinAmountRepository.getById(userId).stream().map(this::convertEntityToDto)
+				.collect(Collectors.toList());
 	}
 
 //	@Override
@@ -57,7 +67,7 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 
 //		BigDecimal bint = coinAmountRepository.getAmount(fromCoin);
 //		System.out.println("Check this amount" + bint);
-		
+
 		Response response = new Response();
 
 		Optional<CoinAmount> coin = coinAmountRepository.findIfCoinExits(userId, toCoin);
@@ -124,21 +134,19 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 
 	@Override
 	public BuyResponse buyCoin(Long userId, UserCoinDTO coinDTO) {
-	
-		
+
 		Long fromCoin = coinDTO.getFromCoin();
 		BigDecimal amount = coinDTO.getCoinAmount();
 		Optional<CoinAmount> coin = coinAmountRepository.findIfCoinExits(userId, fromCoin);
-		
-		
-		if(coin.isPresent()) {
+
+		if (coin.isPresent()) {
 			coinAmountRepository.addAmount(userId, amount, fromCoin);
 			return new BuyResponse("success", "Coin is bought", coinDTO);
-		}else {
+		} else {
 			coinAmountRepository.addNewCoinAmount(userId, fromCoin, amount);
 			return new BuyResponse("success", "Coin is bought", coinDTO);
 		}
-	
+
 	}
 
 	public Response exchangeFailureNotEnoughCoins(ExchangeFormDTO exchangeFormDTO) {
@@ -186,12 +194,27 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 		response.setStatus("success");
 		response.setMessage("Coins Exchanged successfully!!!");
 		response.setExchangeFormDto(exchangeFormDTO);
-		Long fromCoin =  exchangeFormDTO.getFromCoin(); 
+		Long fromCoin = exchangeFormDTO.getFromCoin();
 		Long toCoin = exchangeFormDTO.getToCoin();
 		BigDecimal coinAmount = exchangeFormDTO.getCoinAmount();
 		coinAmountRepository.deductAmount(userId, coinAmount, fromCoin);
 		coinAmountRepository.addNewCoinAmount(userId, toCoin, coinAmount);
 		return response;
 	}
+
+	private UsersCoinListDTO convertEntityToDto(CoinAmount userCoins) {
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		UsersCoinListDTO coinListDTO = new UsersCoinListDTO();
+		coinListDTO = modelMapper.map(userCoins, UsersCoinListDTO.class);
+		return coinListDTO;
+	}
+
+//	private CoinAmount convertEntityToDto(UsersCoinListDTO coinListDTO) {
+//		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+//		
+//		CoinAmount userCoins= new CoinAmount();
+//		userCoins = modelMapper.map(coinListDTO, CoinAmount.class);
+//		return userCoins;
+//	}
 
 }

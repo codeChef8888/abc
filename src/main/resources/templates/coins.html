@@ -47,16 +47,16 @@
 			</thead>
 			<tbody>
 
-				<tr th:each="coin , iStat : ${coinsList}" th:with="fromCoinName = ${coin.name}, userId = ${currentUserId}">
+				<tr th:each="coin , iStat : ${coinsList}" th:with="fromCoinName = ${coin.coinName}, userId = ${currentUserId}">
 					<td> <img th:src="${coin.photo}" width="50" height="40"></td>
-					<td th:text="${coin.name}"></td>
+					<td th:text="${coin.coinName}"></td>
 					<td>
 
 
 						<!-- Button trigger modal -->
 						<button type="button" id="exchange-btn" class="btn btn-exchange btn-primary" th:data-id="${fromCoinName}" th:data-user-id="${userId}" data-toggle="modal"
 							data-target="#exampleModal"
-							th:onclick="'exchanger('+${coin.id}+','+${userId}+')'">Buy</button>
+							th:onclick="'exchanger('+${coin.coinId}+','+${userId}+')'">Buy</button>
 
 
 
