@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "coins")
-public class Coin {
+public class Coin implements Serializable{
 
 	/**
 	 * 

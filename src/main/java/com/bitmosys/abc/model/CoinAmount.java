@@ -1,5 +1,6 @@
 package com.bitmosys.abc.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.EmbeddedId;
@@ -18,8 +19,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "coin_amount")
-public class CoinAmount {
+public class CoinAmount implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@EmbeddedId
 	CoinAmountKey id;
 	

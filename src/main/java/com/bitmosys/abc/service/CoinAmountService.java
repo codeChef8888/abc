@@ -1,13 +1,16 @@
 package com.bitmosys.abc.service;
 
+import java.util.List;
+
 import com.bitmosys.abc.dto.ExchangeFormDTO;
 import com.bitmosys.abc.dto.UserCoinDTO;
+import com.bitmosys.abc.dto.UsersCoinListDTO;
 import com.bitmosys.abc.model.BuyResponse;
 import com.bitmosys.abc.model.Response;
 
 public interface CoinAmountService {
 
-	public Object getAllUserCoins(Long userId);
+	public List<UsersCoinListDTO>  getAllUserCoins(Long userId);
 	
 	public int getTotalCoinTypes(Long userId);
 	
