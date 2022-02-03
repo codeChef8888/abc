@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.bitmosys.abc.serviceImpl.CoinAmountServiceImpl;
 import com.bitmosys.abc.serviceImpl.CoinServiceImpl;
 
-@CrossOrigin
+
+
+
 @Controller
 public class CoinAmountController {
 	
@@ -25,7 +27,7 @@ public class CoinAmountController {
 	CoinServiceImpl coinServiceImpl;
 	
 	@GetMapping("/usercoins/{userId}")
-	public String getAll(@PathVariable(value = "userId") Long currentUserId,Model model) {
+	public String getAll(@PathVariable(value = "userId") Long currentUserId,Model model) throws Exception {
 		model.addAttribute("currentUserId", currentUserId);
 		model.addAttribute("coinsList", coinServiceImpl.getAllCoins());
 		model.addAttribute("totalCoins", coinAmountServiceImpl.getTotalCoinTypes(currentUserId));
