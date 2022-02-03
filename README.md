@@ -33,6 +33,8 @@ Java Resources
                  -css
                  
              - templates(for the html files)
+             
+             - application.properties
        
     - src/test/java
       
