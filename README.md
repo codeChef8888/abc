@@ -19,12 +19,12 @@ Java Resources
                  4. BuyModalController (for handling the buying of coin.)
                  5. UserController (Rest Controller. For Listing All Users.)
                  
-       - dto  (Data Transfer Object)
-       - model  (for POJOs)
-       - exceptionHandler  (for exception handling)
-       - repository  (for implementation of persistence layer)
-       - service  (for business logic)
-       - serviceImpl  (for service implementation)
+      - dto  (Data Transfer Object)
+      - model  (for POJOs)
+      - exceptionHandler  (for exception handling)
+      - repository  (for implementation of persistence layer)
+      - service  (for business logic)
+      - serviceImpl  (for service implementation)
        
     -src/main/resources
     
