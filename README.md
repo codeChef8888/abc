@@ -35,6 +35,25 @@ Java Resources
              - templates(for the html files)
              
              - application.properties
+               - copy paste this configuration:
+                  spring.datasource.url=jdbc:mysql://localhost:3306/abc
+                  spring.datasource.username= your_userName
+                  spring.datasource.password= your_password
+
+                  spring.thymeleaf.mode=HTML5
+                  spring.thymeleaf.prefix=classpath:/templates/
+                  spring.thymeleaf.suffix=.html
+
+                  spring.jpa.show-sql=true
+
+                  spring.jpa.hibernate.ddl-auto=update
+
+
+                  spring.thymeleaf.cache=false 
+
+                  server.error.whitelabel.enabled=false
+
+                  spring.mvc.throw-exception-if-no-handler-found=true
        
     - src/test/java
       
