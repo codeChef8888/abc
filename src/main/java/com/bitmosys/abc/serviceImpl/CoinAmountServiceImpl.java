@@ -1,6 +1,7 @@
 package com.bitmosys.abc.serviceImpl;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.bitmosys.abc.dto.ExchangeFormDTO;
 import com.bitmosys.abc.dto.UserCoinDTO;
 import com.bitmosys.abc.model.BuyResponse;
+import com.bitmosys.abc.model.CoinAmount;
 import com.bitmosys.abc.model.Response;
 import com.bitmosys.abc.repository.CoinAmountRepository;
 import com.bitmosys.abc.service.CoinAmountService;
@@ -55,40 +57,63 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 
 //		BigDecimal bint = coinAmountRepository.getAmount(fromCoin);
 //		System.out.println("Check this amount" + bint);
-
+		
 		Response response = new Response();
 
-		if (availableCoinAmount.compareTo(BigDecimal.valueOf(0)) != 0) {
+		Optional<CoinAmount> coin = coinAmountRepository.findIfCoinExits(userId, toCoin);
 
-			if (fromCoin != toCoin) {
-				if (exchangeCoinAmount.compareTo(availableCoinAmount) == 1) {
+		if (coin.isPresent()) {
 
-					response.setStatus("failure");
-					response.setMessage("Transaction Failed. Coin Amount for Exchange must be less or equal to : [ " + availableCoinAmount + " ]" );
-					response.setExchangeFormDto(exchangeFormDTO);
+			if (availableCoinAmount.compareTo(BigDecimal.valueOf(0)) != 0) {
 
+				if (fromCoin != toCoin) {
+					if (exchangeCoinAmount.compareTo(availableCoinAmount) == 1) {
+
+						response = exchangeFailureNotEnoughCoins(exchangeFormDTO);
+						return response;
+
+					} else {
+						response = exchangeSuccess(userId, exchangeFormDTO);
+						return response;
+
+					}
 				} else {
-
-					response.setStatus("success");
-					response.setMessage("Coins Exchanged successfully!!!");
-					response.setExchangeFormDto(exchangeFormDTO);
-					coinAmountRepository.deductAmount(userId, exchangeCoinAmount, fromCoin);
-					coinAmountRepository.addAmount(userId, exchangeCoinAmount, toCoin);
+					response = exchangeFailureSameCoin(exchangeFormDTO);
+					return response;
 
 				}
+
 			} else {
-				response.setStatus("failure");
-				response.setMessage("You are exchanging the same coin types!!! Please Check!!!");
-				response.setExchangeFormDto(exchangeFormDTO);
+				response = exchangeFailureNoCoin(exchangeFormDTO);
+				return response;
 			}
 
 		} else {
-			response.setStatus("failure");
-			response.setMessage("You don't have any coins for exchanging");
-			response.setExchangeFormDto(exchangeFormDTO);
-		}
 
-		return response;
+			if (availableCoinAmount.compareTo(BigDecimal.valueOf(0)) != 0) {
+
+				if (fromCoin != toCoin) {
+					if (exchangeCoinAmount.compareTo(availableCoinAmount) == 1) {
+
+						response = exchangeFailureNotEnoughCoins(exchangeFormDTO);
+						return response;
+
+					} else {
+						response = exchangeSuccessEntry(userId, exchangeFormDTO);
+						return response;
+
+					}
+				} else {
+					response = exchangeFailureSameCoin(exchangeFormDTO);
+					return response;
+
+				}
+
+			} else {
+				response = exchangeFailureNoCoin(exchangeFormDTO);
+				return response;
+			}
+		}
 
 	}
 
@@ -99,10 +124,74 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 
 	@Override
 	public BuyResponse buyCoin(Long userId, UserCoinDTO coinDTO) {
-		Long fromCoin= coinDTO.getFromCoin();
+	
+		
+		Long fromCoin = coinDTO.getFromCoin();
 		BigDecimal amount = coinDTO.getCoinAmount();
-		coinAmountRepository.addAmount(userId, amount, fromCoin);
-		return new BuyResponse("success", "Coin is bought", coinDTO);
+		Optional<CoinAmount> coin = coinAmountRepository.findIfCoinExits(userId, fromCoin);
+		
+		
+		if(coin.isPresent()) {
+			coinAmountRepository.addAmount(userId, amount, fromCoin);
+			return new BuyResponse("success", "Coin is bought", coinDTO);
+		}else {
+			coinAmountRepository.addNewCoinAmount(userId, fromCoin, amount);
+			return new BuyResponse("success", "Coin is bought", coinDTO);
+		}
+	
+	}
+
+	public Response exchangeFailureNotEnoughCoins(ExchangeFormDTO exchangeFormDTO) {
+		Response response = new Response();
+		BigDecimal availableCoinAmount = exchangeFormDTO.getAvailableCoins();
+		response.setStatus("failure");
+		response.setMessage("Transaction Failed. Coin Amount for Exchange must be less or equal to : [ "
+				+ availableCoinAmount + " ]");
+		response.setExchangeFormDto(exchangeFormDTO);
+		return response;
+
+	}
+
+	public Response exchangeSuccess(Long userId, ExchangeFormDTO exchangeFormDTO) {
+		Long fromCoin = exchangeFormDTO.getFromCoin();
+		Long toCoin = exchangeFormDTO.getToCoin();
+		BigDecimal exchangeCoinAmount = exchangeFormDTO.getCoinAmount();
+		Response response = new Response();
+		response.setStatus("success");
+		response.setMessage("Coins Exchanged successfully!!!");
+		response.setExchangeFormDto(exchangeFormDTO);
+		coinAmountRepository.deductAmount(userId, exchangeCoinAmount, fromCoin);
+		coinAmountRepository.addAmount(userId, exchangeCoinAmount, toCoin);
+		return response;
+	}
+
+	public Response exchangeFailureSameCoin(ExchangeFormDTO exchangeFormDTO) {
+		Response response = new Response();
+		response.setStatus("failure");
+		response.setMessage("You are exchanging the same coin types!!! Please Check!!!");
+		response.setExchangeFormDto(exchangeFormDTO);
+		return response;
+	}
+
+	public Response exchangeFailureNoCoin(ExchangeFormDTO exchangeFormDTO) {
+		Response response = new Response();
+		response.setStatus("failure");
+		response.setMessage("You don't have any coins for exchanging");
+		response.setExchangeFormDto(exchangeFormDTO);
+		return response;
+	}
+
+	public Response exchangeSuccessEntry(Long userId, ExchangeFormDTO exchangeFormDTO) {
+		Response response = new Response();
+		response.setStatus("success");
+		response.setMessage("Coins Exchanged successfully!!!");
+		response.setExchangeFormDto(exchangeFormDTO);
+		Long fromCoin =  exchangeFormDTO.getFromCoin(); 
+		Long toCoin = exchangeFormDTO.getToCoin();
+		BigDecimal coinAmount = exchangeFormDTO.getCoinAmount();
+		coinAmountRepository.deductAmount(userId, coinAmount, fromCoin);
+		coinAmountRepository.addNewCoinAmount(userId, toCoin, coinAmount);
+		return response;
 	}
 
 }
