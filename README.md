@@ -1,9 +1,9 @@
 # Requirements
  For building and running the application you need:
 
-JDK 1.8
-Maven 3
-MySQL
+-JDK 1.8
+-Maven 3
+-MySQL
 
 # Package Structure:
 Java Resources
@@ -42,8 +42,10 @@ Alternatively you can use the Spring Boot Maven plugin like so in the command li
 
 1.User's Coins Listing and Exchange Feature: [ Supports for multiple user based on user ID i.e {userId} ]
 
-URL	                                         Method	    	Sample Valid Request Body
-http://localhost:8080/usercoins/{userId}/	    Get		                  JSON
+| URL | Method	 | Sample Valid Request Body |
+| :-----: | :-: | :-: |
+| http://localhost:8080/usercoins/{userId}/	  | Get | JSON |
+
 
 2. Exchange User's Coin 
 
