@@ -40,24 +40,30 @@ Alternatively you can use the Spring Boot Maven plugin like so in the command li
 2.Run using: mvn spring-boot:run
 3.The web application is accessible via localhost:8080
 
-1.User's Coins Listing and Exchange Feature: [ Supports for multiple user based on user ID i.e {userId} ]
+1.User's Coins Listing and Exchange Feature: [ Supports for multiple user based on user ID i.e. {userId} ]
 
 | URL | Method	 | Sample Valid Request Body |
 | :-----: | :-: | :-: |
-| http://localhost:8080/usercoins/{userId}/	  | Get | JSON |
+| http://localhost:8080/usercoins/{userId}  | Get | JSON |
 
 
 2. Exchange User's Coin 
 
-URL	                                                Method	    	Sample Valid Request Body
-http://localhost:8080/usercoins/{userId}/exchange	    Post/Put	                  JSON
+| URL | Method	 | Sample Valid Request Body |
+| :-----: | :-: | :-: |
+| http://localhost:8080/usercoins/{userId}/exchange	 | Post/Put	 | JSON |
+
 
 3.List Coins to Buy
 
-URL                                               Method             Sample Valid Request Body
-http://localhost:8080/usercoins/{userId}/coins	    Get		                 JSON
+| URL | Method	 | Sample Valid Request Body |
+| :-----: | :-: | :-: |
+| http://localhost:8080/usercoins/{userId}/coins	 	 | Get	 | JSON |
+
 
 4.Buy Coins
 
-URL                                               Method             Sample Valid Request Body
-http://localhost:8080/usercoins/{userId}/buy	    Post/Put		                 JSON
+| URL | Method	 | Sample Valid Request Body |
+| :-----: | :-: | :-: |
+| http://localhost:8080/usercoins/{userId}/buy	  	 | Post/Put	 | JSON |
+
