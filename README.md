@@ -8,8 +8,10 @@
 # Package Structure:
 Java Resources
   - src/main/java
+ 
      - com/bitmosys/abc
-      - controller  (for the request mappings)
+     
+     - controller  (for the request mappings)
       
                  1. CoinAmountController (for Listing available User Coins for exchanging.)
                  2. ExchangeModalController (for handling the exchange between coins.)
@@ -23,6 +25,7 @@ Java Resources
        - repository  (for implementation of persistence layer)
        - service  (for business logic)
        - serviceImpl  (for service implementation)
+       
     -src/main/resources
     
          - static  (for the css and js files)
