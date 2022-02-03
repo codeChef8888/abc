@@ -186,8 +186,10 @@ public class CoinAmountServiceImpl implements CoinAmountService {
 		response.setStatus("success");
 		response.setMessage("Coins Exchanged successfully!!!");
 		response.setExchangeFormDto(exchangeFormDTO);
+		Long fromCoin =  exchangeFormDTO.getFromCoin(); 
 		Long toCoin = exchangeFormDTO.getToCoin();
 		BigDecimal coinAmount = exchangeFormDTO.getCoinAmount();
+		coinAmountRepository.deductAmount(userId, coinAmount, fromCoin);
 		coinAmountRepository.addNewCoinAmount(userId, toCoin, coinAmount);
 		return response;
 	}
