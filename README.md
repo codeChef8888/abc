@@ -1,20 +1,20 @@
 # Requirements
  For building and running the application you need:
 
--JDK 1.8
--Maven 3
--MySQL
+1. JDK 1.8
+2. Maven 3
+3. MySQL
 
 # Package Structure:
 Java Resources
   - src/main/java
      - com/bitmosys/abc
-       - controller  (for the request mappings)
-          -CoinAmountController (for Listing available User Coins for exchanging.)
-          -ExchangeModalController (for handling the exchange between coins.)
-          -CoinController (for Listing Coins for Buying.)
-          -BuyModalController (for handling the buying of coin.)
-          -UserController (Rest Controller. For Listing All Users.)
+      - controller  (for the request mappings)
+             -CoinAmountController (for Listing available User Coins for exchanging.)
+             -ExchangeModalController (for handling the exchange between coins.)
+             -CoinController (for Listing Coins for Buying.)
+             -BuyModalController (for handling the buying of coin.)
+             -UserController (Rest Controller. For Listing All Users.)
        - dto  (Data Transfer Object)
        - model  (for POJOs)
        - exceptionHandler  (for exception handling)
