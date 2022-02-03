@@ -27,13 +27,12 @@ Java Resources
       - serviceImpl  (for service implementation)
        
     -src/main/resources
-    
-         - static  (for the css and js files)
+          - static  (for the css and js files)
          
                  -js
                  -css
                  
-       - templates(for the html files)
+           - templates(for the html files)
        
     - src/test/java
       
