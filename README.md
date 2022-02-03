@@ -10,11 +10,13 @@ Java Resources
   - src/main/java
      - com/bitmosys/abc
       - controller  (for the request mappings)
+      
                  1. CoinAmountController (for Listing available User Coins for exchanging.)
                  2. ExchangeModalController (for handling the exchange between coins.)
                  3. CoinController (for Listing Coins for Buying.)
                  4. BuyModalController (for handling the buying of coin.)
                  5. UserController (Rest Controller. For Listing All Users.)
+                 
        - dto  (Data Transfer Object)
        - model  (for POJOs)
        - exceptionHandler  (for exception handling)
